@@ -24,7 +24,7 @@ There are 5 tabs available in my MLB Batting App.
 1. Heat Maps tab
 
 
-![Screenshot 2023-07-12 233824](https://github.com/josephmontes/BattingApp/assets/125607783/e883da56-8607-465f-855f-eef415ac1a3c)
+![Screenshot 2023-07-12 233824](https://github.com/josephmontes/MLBBattingApp/assets/125607783/5d6d129a-4f49-4e35-892e-c9558ea9800e)
 
 * After selecting a player and season(s), there is a pitch type drop down menu followed by input sliders for velocity range, vert. & horiz. pitch breaks and spin rate to allow the user to get heat maps vs. a very specific pitch
   
@@ -43,7 +43,7 @@ There are 5 tabs available in my MLB Batting App.
 2. Strike Zone tab
 
 
-![Screenshot 2023-07-12 234117](https://github.com/josephmontes/BattingApp/assets/125607783/7bb0b61d-0b2a-457f-99e5-ee7cab1a87b0)
+![Screenshot 2023-07-12 234117](https://github.com/josephmontes/MLBBattingApp/assets/125607783/70f804dc-7a2b-4f1e-86d0-1da2e6523aab)
 * After selecting a player, season(s), pitch type and pitcher handedness, there is a stat drop down menu 
 * The stat filter options are: Whiff %, Swing %, Take %, Average Exit Velocity, Average Launch Angle, Run Value, Hard Hit %, Sweet Spot %, Barrel %, and Called Strike + Whiff % (CsW %)
   
@@ -53,8 +53,7 @@ There are 5 tabs available in my MLB Batting App.
 
 
 
-![Screenshot 2023-07-12 234314](https://github.com/josephmontes/BattingApp/assets/125607783/2c689b9f-c01a-4e1b-977b-2f4f92f7bda9)
-
+![Screenshot 2023-07-12 234314](https://github.com/josephmontes/MLBBattingApp/assets/125607783/2839f398-2a14-43ec-b17f-a3fe2d0e32e5)
 * These are interactive histograms made by using the plotly package in R
 * When the user hovers their mouse over a bin in either of the histograms, the LA/EV value and the amount in that bin is displayed
 * The red highlighted bins in the histogram represent Sweet Spot and Hard Hit
@@ -65,8 +64,7 @@ There are 5 tabs available in my MLB Batting App.
 3. Spray Chart + Hit Profile tab
 
 
-![Screenshot 2023-07-12 234530](https://github.com/josephmontes/BattingApp/assets/125607783/cf869010-fb3e-4313-a3c7-e845bedac332)
-
+![Screenshot 2023-07-12 234530](https://github.com/josephmontes/MLBBattingApp/assets/125607783/71595df9-5fca-4062-8e76-26ae297e22e8)
 * After selecting a player, season(s), and pitch type, there is a drop down menu to select a hit type.
   
     — the hit type filter options are: Single, Double, Triple, Homerun, All hits, Groundball, Linedrive, Flyball, Popup, All batted balls
@@ -88,8 +86,7 @@ There are 5 tabs available in my MLB Batting App.
 4. Swing/Take Run Value Data tab
 
 
-![Screenshot 2023-07-12 234952](https://github.com/josephmontes/BattingApp/assets/125607783/ba9a910a-1480-4d52-b0d9-6ea3948f2914)
-
+![Screenshot 2023-07-12 234952](https://github.com/josephmontes/MLBBattingApp/assets/125607783/3ea6185d-1c6f-40a2-a40d-8397137f72d1)
 * After selecting a player and season(s), there are additional filters that allow the user to filter by pitch count, pitch type and pitcher handedness 
 * The zones in focus for this tab are organzied by hittability; ‘heart’ of the zone (most hittable, purple), ‘shadow’ or edge of the zone (red), ‘chase’ part of the zone (yellow), and ‘waste’ or uncompetitive part of the zone (least hittable, grey)
   
@@ -107,8 +104,7 @@ There are 5 tabs available in my MLB Batting App.
 
 
 
-![Screenshot 2023-07-12 235017](https://github.com/josephmontes/BattingApp/assets/125607783/94774848-3a38-4cb5-85b9-2aaa2d46677a)
-
+![Screenshot 2023-07-12 235017](https://github.com/josephmontes/MLBBattingApp/assets/125607783/3f49bf16-a6b1-460a-8763-98ddc8cf659f)
 * The first table adds up the players total Run Value, Swing Runs and Take Runs
 * The second table returns a set of plate discipline statistics, Chase %, Contact %, 1st Pitch Swing % etc.
 * The third table basically puts the info from the visualizations into a table format, in addition it returns how often the batter gets a pitch in each of the zones
@@ -119,15 +115,14 @@ There are 5 tabs available in my MLB Batting App.
 5. Trend Charts tab
 
 
-![Screenshot 2023-07-12 235127](https://github.com/josephmontes/BattingApp/assets/125607783/92381ff6-c2b5-40a2-a94a-2f9e5bdcf56a)
-
+![Screenshot 2023-07-12 235127](https://github.com/josephmontes/MLBBattingApp/assets/125607783/e67044d8-5ee6-44c8-b369-337a48eb8199)
 * After selecting a player, there is a pitch type filter that will show how a player is trending vs. a certain pitch type, additionally there is a date range filter that can be used to find how a batters stats are trending over any period of time over the course of a season
 * These are interactive plotlys that will return the value of the line at any point if the user hovers their mouse over it 
 * Only uses 1 season of data rather than 2019-2023 
 
 
 
-![Screenshot 2023-07-13 004305](https://github.com/josephmontes/BattingApp/assets/125607783/52697670-8e12-4ea7-aa79-69d1df69ebd8)
+![Screenshot 2023-07-13 004305](https://github.com/josephmontes/MLBBattingApp/assets/125607783/2b56ddab-8b1f-47fc-82cf-6224a715f567)
 
 * There are 5 trending line graphs in this tab with the following statistical groupings:
     
@@ -154,4 +149,4 @@ In total, this app features 9 different data visualizations and 5 statistical ta
 Thank you again for taking the time to check out my first baseball analytics web app.
 
 
-Please feel free to email josephmontes.baseball@gmail.com with any questions, suggestions, or comments about this project. I can also share the large CSV files containing the relevant Statcast pitch by pitch data.
+Please feel free to email me at josephmontes.baseball@gmail.com with any questions, suggestions, or comments about this project. I can also share the large CSV files containing the relevant Statcast pitch by pitch data.
