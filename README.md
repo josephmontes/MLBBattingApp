@@ -5,6 +5,18 @@ Thank you for taking the time to check out my first baseball analytics web app.
 
 .                                      
 
+Inside this repository, the code for this project is divided into the following groups:
+- "FullMLBBattingApp.R" displays the entire code for this project in 1 place
+- "SetUp_MLBBattingAPP" displays the code that loads the necessary libraries and data for the project
+- "Tab1_Heatmaps" is the part of "FullMLBBAttingApp.R" pertaining to the first tab
+- "Tab2_13Zones" is the part of "FullMLBBAttingApp.R" pertaining to the second tab
+- "Tab3_SprayChart" is the part of "FullMLBBAttingApp.R" pertaining to the third tab
+- "Tab4_RVSwingDecisions" is the part of "FullMLBBAttingApp.R" pertaining to the fourth tab
+- "Tab5_TrendCharts" is the part of "FullMLBBAttingApp.R" pertaining to the fifth tab
+- "UIServer" is the part of "FullMLBBattingApp.R" pertaining to the UI and Server parts that are used to run the actual Rshiny application
+
+.
+
 This web app can be ran using RShiny + Statcast data.
 
 I used baseballr::scrape_statcast_savant() to collect pitch by pitch data from the 2019 season to the 2023 All-Star Break.
