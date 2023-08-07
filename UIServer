@@ -1,0 +1,940 @@
+# DEFINE UI
+
+  ui <- fluidPage(
+    navbarPage(
+      title = "MLB Batting App",
+      
+      
+  # Heat Maps (First tab)
+  
+  # First Tab Panel text
+  
+      tabPanel(
+        title = "Heat Maps",
+        
+        fluidPage(
+    
+          
+  # Heat Map page's header text
+          
+          titlePanel("Heat Maps"),
+          
+          
+    # Heat Maps interactive user filters in the sidebar
+  
+          sidebarLayout(
+            sidebarPanel(
+              width = 3, 
+              
+      # Player filter
+              selectizeInput(
+                "player_name",
+                "Search player",
+                choices = unique(heatmap_data$player_name),
+                multiple = FALSE,
+                options = list(placeholder = "Type name...", maxOptions = 10)),
+      # Year range filter
+              selectInput("year_range", "Select season(s)", 
+                          choices = unique(heatmap_data$game_year), 
+                          multiple = TRUE, 
+                          selected = "2023"),
+      # Pitch type filter
+              selectInput(
+                "pitch_type",
+                "Select pitch type",
+                choices = c("Fastball", "Breaking Ball", "Offspeed")),
+      # Velocity filter
+              sliderInput(
+                "release_speed",
+                "Velocity (mph)",
+                min = 50,
+                max = 110,
+                value = c(50, 110),
+                step = 1),
+      # Horizontal pitcher break filter
+              sliderInput(
+                "pfx_x_in_pv",
+                "Horizontal Break (in.)",
+                min = -30,
+                max = 30,
+                value = c(-30, 30),
+                step = 0.1),
+      # Vertical pitch break filter
+              sliderInput(
+                "pfx_z_in",
+                "Vertical Break (in.)",
+                min = -30,
+                max = 30,
+                value = c(-30, 30),
+                step = 0.1),
+      # Spin rate filter
+              sliderInput(
+                "release_spin_rate",
+                "Spin Rate (rpm)",
+                min = 0,
+                max = 4000,
+                value = c(0, 4000),
+                step = 1)
+            ),
+      
+    # Main panel with all of the plots 
+            mainPanel(
+              plotOutput("usage_plot"),
+              plotOutput("take_plot"),
+              plotOutput("swing_plot"),
+              plotOutput("whiff_plot"),
+              plotOutput("hit_plot"),
+              plotOutput("barrel_plot"),
+              plotOutput("GB_plot"),
+              plotOutput("LD_plot"),
+              plotOutput("FB_plot"),
+              plotOutput("PU_plot")
+            )
+          )
+        )
+      ),
+  
+  
+  # 13 Zone Visualization (Second tab)
+  
+  # Second Tab Panel text
+  
+      tabPanel(
+        title = "Strike Zone",
+        fluidPage(
+          
+        
+    # 13 Zone page's header text
+    
+          titlePanel("13-Zone Data"),
+          
+          
+    # 13 Zone Visualization interactive user filters in the sidebar
+          
+          sidebarLayout(
+            sidebarPanel(
+  
+              
+      # Player filter
+              selectizeInput(
+                "player_name2",
+                "Search player",
+                choices = unique(zonedat$player_name),
+                multiple = FALSE,
+                options = list(placeholder = "Judge, Aaron", maxOptions = 10)
+              ),
+      # Year filter
+              checkboxGroupInput(
+                inputId = "year_range2",
+                label = "Select season(s)",
+                choices = unique(zonedat$game_year),
+                selected = "2023"
+              ),
+      # Statistical filter 
+              selectInput(
+                "type",
+                "Select stat",
+                choices = c("Whiff %", "Swing %", "Take %", "Average Exit Velocity", "Average Launch Angle", "Run Value", 
+                            "Hard Hit %" , "SwSpot %", "CsW %", "Barrel %")
+              ),
+      # Pitch type filter
+              selectInput(
+                "pitch_type2",
+                "Select pitch type",
+                choices = c("Fastball", "Breaking Ball", "Offspeed", "All"),
+                selected = "All"
+              ),
+      # Pitcher handedness filter
+              selectInput(
+                "p_throws2",
+                "Select pitcher handedness",
+                choices = c("B", "R", "L")
+              )
+            ),
+      
+    # Main panel displaying the plots
+            mainPanel(
+              plotOutput("plot"),
+              plotlyOutput("plotly1"),
+              plotlyOutput("plotly2")
+            )
+          )
+        )
+      ),
+  
+  
+  # Spray Chart (Third tab)
+  
+  # Third Tab Panel text
+  
+    tabPanel(
+      title = "Spray Chart",
+      fluidPage(
+        
+        
+    # Spray Chart page's header text
+      
+        titlePanel("Spray Chart + Hit Profile"),
+        
+        
+        # Place the available Spray Chart filters in a sidebar
+        
+        sidebarLayout(
+          sidebarPanel(
+            width = 3,
+            
+            
+      # Player filter
+          selectizeInput(
+            "player_name3",
+            "Search player",
+            choices = unique(spray_dat$player_name),
+            multiple = FALSE,
+            options = list(placeholder = "Judge, Aaron", maxOptions = 10)
+          ),
+      # Year filter
+          selectInput("year_range3", "Select seasons(s)", 
+                      choices = unique(spray_dat$game_year), 
+                      multiple = TRUE, 
+                      selected = "2023"
+          ),
+      # Pitch type filter
+          selectInput(
+            "pitch_type3",
+            "Select pitch type",
+            choices = c("Fastball", "Breaking Ball", "Offspeed", "All"),
+            selected = "All"
+          ),
+      # Hit type filter
+          selectInput(
+            "hit_type",
+            "Select hit type",
+            choices = c("Single", "Double", "Triple", "Homerun", "All hits", "Groundball", "Linedrive", "Flyball", "Popup", "All batted balls"),
+            selected = "All hits"
+          )
+        ),
+      
+      
+      # Display the spray chart and 2 tables
+      mainPanel(
+        width = 9,
+        fluidRow(
+          column(6, plotOutput("sprayplot")),
+          column(4, style = "height: 500px;", plotlyOutput("nplot", width = "100%", height = "600px"))
+        ),
+        fluidRow(
+          column(12, style = "margin-top: 75px;", tableOutput("table4")),
+          column(12, tableOutput("table5"))
+        )
+      )
+          )
+        )
+      ),
+  
+  
+  # Swing Take Decisions (Fourth tab)
+  
+  # Fourth Tab Panel text
+  
+      tabPanel(
+        title = "Swing Quality",
+        fluidPage(
+           
+          
+    # Swing Take page's header text
+          
+          titlePanel("Swing/Take Run Value Data"),
+          
+          
+      # Create the available Spray Chart filters
+          
+          fluidRow(
+            column(
+              width = 12,
+              
+  
+        # Player filter
+              selectizeInput(
+                "player_name4",
+                "Search player",
+                choices = unique(swing_dat$player_name),
+                multiple = FALSE,
+                options = list(placeholder = "Judge, Aaron", maxOptions = 10)
+              )
+            )
+          ),
+        # Year filter
+          fluidRow(
+            column(
+              width = 2,
+              checkboxGroupInput(
+                inputId = "year_range4",
+                label = "Select seasons(s)",
+                choices = unique(swing_dat$game_year),
+                selected = "2023"
+              )
+            ),
+        # Count filter
+            column(
+              width = 2,
+              checkboxGroupInput(
+                inputId = "count",
+                label = "Select count(s)",
+                choices = c(
+                  "0 0", "0 1", "0 2", "1 0", "1 1", "1 2",
+                  "2 0", "2 1", "2 2", "3 0", "3 1", "3 2"
+                ),
+                selected = c(
+                  "0 0", "0 1", "0 2", "1 0", "1 1", "1 2",
+                  "2 0", "2 1", "2 2", "3 0", "3 1", "3 2"))
+            ),
+        # Pitch type filter
+            column(
+              width = 2,
+              selectInput(
+                "pitch_type4",
+                "Select pitch type",
+                choices = c("All", "Fastball", "Breaking Ball", "Offspeed"),
+                selected = "All"
+              )
+            ),
+        # Pitcher handedness filter
+            column(
+              width = 4,
+              selectInput(
+                "p_throws4",
+                "Select pitcher handedness",
+                choices = c("B", "R", "L")
+              )
+            )
+          ),
+      
+      
+      # Main panel for the 3 plots
+      
+          mainPanel(
+            width = 12,
+            fluidRow(
+              column(width = 4, plotOutput("rv_plot")),
+              column(width = 4, plotOutput("plot3")),
+              column(width = 3, plotOutput("plot2"))
+            ),
+            
+            
+          # Tables in a row underneath the plots
+          
+            fluidRow(
+              tableOutput("table2"),
+              tableOutput("table6"),
+              tableOutput("table")
+            )
+          )
+        )
+      ),
+  
+  
+  # Trend Charts (Fifth tab)
+  
+   # Fifth Tab Panel text
+  
+      tabPanel(
+        title = "Trend Charts",
+        fluidPage(
+          
+          
+    # Spray Chart page's header text
+          
+          titlePanel("Trend Charts"),
+          
+          
+      # Place the available Spray Chart filters in a sidebar
+          
+          sidebarLayout(
+            sidebarPanel(
+              width = 3,
+              
+        # Player filter
+              selectizeInput(
+                "player_name5",
+                "Search player",
+                choices = unique(rs23$player_name),
+                multiple = FALSE,
+                options = list(placeholder = "Judge, Aaron", maxOptions = 10)
+              ),
+        # Date filter
+              dateRangeInput(
+                "date_range", 
+                "Select date range",
+                start = "2023-06-23",
+                end = "2023-07-06"
+              ),
+        # Pitch type filter
+              selectInput(
+                "pitch_type5",
+                "Select pitch type",
+                choices = c("Fastball", "Breaking Ball", "Offspeed", "All"),
+                selected = "All"
+              )
+            ),
+        
+    # Main panel for the 6 plotlys
+    
+            mainPanel(
+              width = 6,
+              fluidRow(
+                align = "center",
+                plotlyOutput("slash_trend"),
+                plotlyOutput("KBB_trend"),
+                plotlyOutput("plate_disc_trend"),
+                plotlyOutput("wOBA_trend"),
+                plotlyOutput("barrel_trend"))
+           )
+          )
+         )
+        ),
+       )
+      )
+
+
+# Define Server
+
+  server <- function(input, output) {
+    
+  # Heat Maps (First Tab)
+    # Use the get_years() function to create a reactive data frame that filters the data by years selected in the user interface
+    
+      heatmap_dat <- reactive({
+        get_years(heatmap_data, input$year_range)
+          }
+        )
+    
+    
+    # Create a reactive element called 'B()' that will update each time the rest of the inputs are altered in the user interface 
+    
+      B <- reactive({
+          data <- subset(heatmap_dat(), player_name == input$player_name & pitch_type == input$pitch_type & 
+                        release_speed >= input$release_speed[1] & release_speed <= input$release_speed[2] &
+                        pfx_x_in_pv >= input$pfx_x_in_pv[1] & pfx_x_in_pv <= input$pfx_x_in_pv[2] & 
+                        pfx_z_in >= input$pfx_z_in[1] & pfx_z_in <= input$pfx_z_in[2] & 
+                        release_spin_rate >= input$release_spin_rate[1] & release_spin_rate <= input$release_spin_rate[2])
+          }
+        )
+    
+    
+    # Use 'B()' as the data to create each of the plots
+      
+      output$usage_plot <- renderPlot({
+        ggplot(B(), aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location (in feet)")+
+          ylab("Vertical Pitch Location (in feet)")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste(input$pitch_type, "Location Heatmap :", input$player_name), 
+                  "Catcher's View")
+     }
+     )
+    
+      output$whiff_plot <- renderPlot({
+  
+    # Use the 'find_plots()' function to create the specific heat maps (Whiffs, Hits, Hard Hit, etc.)
+    # In this example, whiffs are defined as swinging strikes and foul tips, hard hit is launch_speed >= 98 etc. 
+        
+        D <- find_plots(B(), "description", value = c("swinging_strike", "foul_tip"))
+        
+    # Use 'ggplot()' to create the heat map
+        
+        ggplot(D, aes(x=plate_x, y=plate_z)) +
+          
+        
+    # ggplot::stat_density_2d() and scale_fill_distiller() are creating the heat map visualization
+        
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          
+     # coord_fixed() so the plots look like a strike zone 
+          
+          coord_fixed()+
+          
+     # xlim() and ylim() so the plot looks consistent each time
+          
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+    
+      # Create the rectangle strike zone
+          
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          
+      # ggplot::theme_classic() includes the legend and an overall more detailed plot layout
+          
+          theme_classic()+
+          
+      # Label each axis
+          
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          
+      # Use facet_wrap() to make 2 separate heat maps: vs. RHP & vs. LHP
+          
+          facet_wrap(~p_throws)+
+          
+       # use ggtitle() to create a reactive title
+          
+          ggtitle(paste("Whiff Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+        
+      })
+      
+      
+    # Repeat similar steps for the rest of the graphs
+      
+      output$take_plot <- renderPlot({
+        E <- find_plots(B(), "description", value = c("ball", "called_strike"))
+        ggplot(E, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Take Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$hit_plot <- renderPlot({
+        F <- find_plots(B(), "description", value = "hit_into_play")
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Hit Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$swing_plot <- renderPlot({
+        F <- find_plots(B(), "description", value = c("foul", "hit_into_play", "swinging_strike", "foul_tip", "swinging_strike_blocked"))
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Swing Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$barrel_plot <- renderPlot({
+        F <- find_plots(B(), "barrel", value = 1)
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Barrel Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$GB_plot <- renderPlot({
+        F <- find_plots(B(), "bb_type", value = "ground_ball")
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Groundball Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$LD_plot <- renderPlot({
+        F <- find_plots(B(), "bb_type", value = "line_drive")
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Linedrive Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      
+      output$FB_plot <- renderPlot({
+        F <- find_plots(B(), "bb_type", value = "fly_ball")
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Flyball Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+      output$PU_plot <- renderPlot({
+        F <- find_plots(B(), "bb_type", value = "popup")
+        ggplot(F, aes(x=plate_x, y=plate_z))+
+          stat_density_2d(aes(fill=..density..), geom="raster", contour = F) +
+          scale_fill_distiller(type="div")+
+          coord_fixed()+
+          xlim(c(-2,2))+
+          ylim(c(0,5))+
+          annotate("rect", xmin=-0.85, xmax=0.85, ymin=1.6, ymax=3.5, fill="black", color="black", alpha=0.1)+
+          theme_classic()+
+          xlab("Horizontal Pitch Location")+
+          ylab("Vertical Pitch Location")+
+          facet_wrap(~p_throws)+
+          ggtitle(paste("Popup Heatmap vs.", input$pitch_type, ":", input$player_name), 
+                  "Catcher's View")
+      })
+    
+  
+  # 13-Zone Visualization (Second tab)
+    # Use the 'get_years()' function to create a 2nd reactive element for the 13-Zone Visualization 
+    
+      zdat <- reactive({
+       get_years(zonedat, input$year_range2)
+        })
+    
+  
+    # Use the 'get_zone_data()' function to create 13 zone visualization based on the user inputs
+    
+      output$plot <- renderPlot({
+       zplot <- get_zone_data(zdat(), input$player_name2, input$type, input$pitch_type2, input$p_throws2)
+         
+        zplot})
+    
+    
+    # Use 'zdat()' & plotly::renderPlotly() to create plotly histograms displaying the player's Launch Angles and Exit Velocities
+      
+      output$plotly1 <- renderPlotly({
+         filtered_df <- filter(zdat(), player_name == input$player_name2)
+        
+      # Highlight the bins that represent the Sweet Spot
+          filtered_df$fill_color <- ifelse(filtered_df$launch_angle >= 8 & filtered_df$launch_angle <= 30, "lightblue", "orange")
+    
+      # First, Create the data visualization using ggplot()    
+          p <- ggplot(filtered_df, aes(x = launch_angle, fill = fill_color)) +
+            geom_histogram(binwidth = 1, color = "black") +
+            labs(title = paste("Launch Angles for", input$player_name2),
+                x = "Launch Angle", y = "Batted Balls")+
+            xlim(-75, 75)+theme(legend.position = "none")
+        
+      # Then, use ggplotly() to convert it into an interactive plotly visualization
+         ggplotly(p, tooltip = c("x", "y")) %>%
+            layout(hovermode = "closest")
+        })
+      
+    
+    # Use 'zdat()' & plotly::renderPlotly() to create plotly histograms displaying the player's Launch Angles and Exit Velocities
+      
+      output$plotly2 <- renderPlotly({
+         filtered_df <- filter(zdat(), player_name == input$player_name2)
+        
+      # Highlight the bins that represent a Hard Hit ball
+          filtered_df$fill_color <- ifelse(filtered_df$launch_speed >= 98, "lightgreen", "red")
+    
+      # First, Create the data visualization using ggplot()    
+         p <- ggplot(filtered_df, aes(x = launch_speed, fill = fill_color)) +
+          geom_histogram(binwidth = 1, color = "black") +
+          labs(title = paste("Exit Velocity for", input$player_name2),
+               x = "Exit Velocity", y = "Batted Balls")+
+          xlim(15,130)+theme(legend.position = "none")
+    
+      # Then, use ggplotly() to convert it into an interactive plotly visualization
+         ggplotly(p, tooltip = c("x", "y")) %>%
+          layout(hovermode = "closest")
+        })
+      
+      
+    # Edit the hover data labels
+      
+      observeEvent(event_data("plotly_hover"), {
+      hover_data <- event_data("plotly_hover")
+        if (!is.null(hover_data)) {
+          count <- hover_data$y
+          value <- hover_data$x
+          }
+        })
+  
+  
+  # Spray Chart (Third tab)   
+    # Use the 'get_years()' function to create a 3rd reactive element for the Spray Charts (Third tab)
+  
+     spdat <- reactive({
+      get_years(spray_dat, input$year_range3)
+      })
+     
+    # Use 'get_spraychart()' function to create the spray chart visualization based on the user inputs
+    
+      output$sprayplot <- renderPlot({
+      get_spraychart(spdat(), input$player_name3, input$pitch_type3, input$hit_type)
+        })
+      
+      output$nplot <- renderPlotly({
+        get_launch_map(spdat(), input$player_name3, input$pitch_type3, input$hit_type)
+      })
+      
+    
+    # Use 'get_all_batter_data1()' function to create the first stats table for this player (BA, OBP, SLG, Barrel %, etc.)
+    
+     output$table4 <- renderTable({
+       get_all_batter_data1(spdat(), input$player_name3)
+       })
+    
+     
+    # Use 'get_all_batter_data2()' function to create the second stats table for this player (Zone %, O-Swing %, Z-Contact %, etc.)
+    
+      output$table5 <- renderTable({
+       get_all_batter_data2(spdat(), input$player_name3)
+       })
+    
+  
+  # Swing Take Decisions (Fourth tab)
+    # Use the 'get_years2()' function to create the reactive data frame
+    
+      ddat <- reactive({
+       get_years2(swing_dat, input$year_range4, input$p_throws4, input$pitch_type4, input$count)
+     })
+  
+  
+    # Use the 'get_rv_plot()' function to create the 4-Zone Run Value graphic
+  
+      output$rv_plot <- renderPlot({
+       get_rv_plot(ddat(), input$player_name4)
+      })
+  
+  
+    # Use 'get_loc_table()' to create a table that will display the amount of 'Swing Value' and 'Take Value' make up the overall 'Run Value' total
+  
+      output$table2 <- renderTable({
+       df <- get_loc_table(ddat(), input$player_name4)
+     
+       df %>%
+         summarise(across(c(run_value, swing_value, take_value), sum)) %>% 
+         rename("Run Value" = run_value, "Swing Runs" = swing_value, "Take Runs" = take_value)
+      })
+  
+  
+    # Create the Swing% vs. Take% visualization (with League Average)
+  
+      output$plot3 <- renderPlot({
+    
+      # Use 'get_loc_table()' to get the requested player data
+      
+        data <- get_loc_table(ddat(), input$player_name4) 
+      
+      
+      # Organize the 4 zones in the correct order 
+      
+        data$category <- factor(data$category, levels = c("waste", "chase", "shadow", "heart"))
+      
+      # 'Start' and 'End' will be used to position the bars in the visualization
+      
+        data$Start <- -data$swing_pct/2
+        data$End <- data$take_pct/2
+      
+      
+      # Use 'get_loc_table()' to get the relevant league average data
+      
+        lgdata <- get_lg_table(ddat())
+        lgdata$category <- factor(data$category, levels = c("waste", "chase", "shadow", "heart"))
+        lgdata$Start <- -lgdata$swing_pct/2
+        lgdata$End <- lgdata$take_pct/2
+      
+      
+      # Create the Swing% vs. Take% bar graph 
+      
+        pplot <- ggplot(data, aes(y = category)) +
+         geom_segment(aes(x = Start, xend = End, y = category, yend = category, color = category),
+                     size = 10, lineend = "butt") +
+          geom_vline(xintercept = 0, color = "grey", size = .5, linetype = "solid") +
+          geom_text(aes(x = -25, y = 4.5, label = "Swing"), hjust = 1, size = 6) +
+          geom_text(aes(x = 25, y = 4.5, label = "Take"), hjust = 0, size = 6) +
+          geom_text(aes(x = Start - 5, y = category, label = paste(swing_pct, "%")), hjust = .65, color = "black", size = 5) +
+          geom_text(aes(x = End + 5, y = category, label = paste(take_pct, "%")), hjust = 0.38, color = "black", size = 5) +
+          xlim(-55, 55) +
+          scale_color_manual(values =  c("#E0DFDA", "#ffff7f", "#E9A4A7", "#E1AFDD")) +
+          guides(color = FALSE) +
+          theme_void() 
+      
+      
+      # Create the league average bar graph
+      
+        lgplot <- ggplot(lgdata, aes(y = category)) +
+          geom_segment(aes(x = Start, xend = End, y = category, yend = category),
+                      size = 1.45, lineend = "square", linetype ="dotted", color = "grey") +
+          geom_vline(xintercept = 0, color = "grey", size = .5, linetype = "solid") +
+          geom_text(aes(x = Start - 5, y = category, label = paste(swing_pct, "%")), hjust = .65, color = "black", size = 4.5) +
+          geom_text(aes(x = End + 5, y = category, label = paste(take_pct, "%")), hjust = 0.38, color = "black", size = 4.5) +
+          xlim(-55, 55) +
+          guides(color = FALSE) +
+          theme_void() 
+      
+      
+      # Use 'ggdraw()' to layer the 2 graphs
+      
+        p <- ggdraw()+draw_plot(pplot)+draw_plot(lgplot, x=0, y=-0.05, width=1, height=1)
+        p
+        
+     })
+  
+  
+    # Create the 'Run Value' visualization broken into 'Swing Runs' and 'Take Runs' for each of the 4 zones
+  
+      output$plot2 <- renderPlot({
+    
+        df <- get_loc_table(ddat(), input$player_name4)
+    
+        df <- df %>%
+         mutate(category = factor(category, levels = c("waste", "chase", "shadow", "heart")))
+    
+    # Use tidyr::pivot_longer() to create a data frame that displays the 'swing_value' and 'take_value' for each of the 4 zones
+    
+      df_long <- pivot_longer(df, cols = c(take_value, swing_value), names_to = "variable", values_to = "value")
+    
+    
+    # Create the double bar graph visualization
+    # X-axis displays the Run Value, Y-axis displays each of the 4 categories, and the 'fill' color for each bar has to be factored so Swing Runs are on top
+    
+      cplot <- ggplot(df_long, aes(x = value, y = category, fill = factor(variable, levels = c("take_value", "swing_value")))) +
+      
+      # Orient the bar graph sideways and stylize the bar display
+        geom_bar(stat = "identity", orientation = "y", position = "dodge", width = 0.6) +
+      
+      # Use geom_text() to display the run value and use ifelse() to position the text in the middle of the graph
+        geom_text(aes(label = ifelse(variable == "swing_value" & category == "heart", paste(ifelse(value >= 0, paste("+", value), value), "Swing Runs"), ""), 
+                    x = ifelse(value >= 0, -20, 20)), position = position_dodge(width = 0.75), vjust = 0.5, color = "black", size = 6) +
+        geom_text(aes(label = ifelse(variable == "take_value" & category == "heart", paste(ifelse(value >= 0, paste("+", value), value), "Take Runs"), ""), 
+                    x = ifelse(value >= 0, -20, 20)), position = position_dodge(width = 0.75), vjust = 0.5, color = "black", size = 6) +
+        geom_text(aes(label = ifelse(category %in% c("shadow", "chase", "waste"), ifelse(value >= 0, paste("+", value), value), ""), 
+                    x = ifelse(value >= 0, -8.5, 8.5)), position = position_dodge(width = 0.75), vjust = 0.5, color = "black", size = 6) +
+      
+      # Set the limits of the graph
+        coord_cartesian(xlim = c(-40, 40)) +
+      
+      
+      # This places a horizontal line in between the 2 bars for each category and color codes them 
+        geom_hline(yintercept = c(1, 2, 3, 4), color = c("#E0DFDA", "#ffff7f", "#E9A4A7", "#E1AFDD"), size = 2) +
+      
+      
+      # Create custom colors for 'Swing Runs' and 'Take Runs'
+        scale_fill_manual(values = c("#e1ad01", "#6bd600"), guide = FALSE) +
+        labs(title = "Run Value", x = NULL, y = NULL) +
+        theme_minimal() +
+        theme(axis.text.x = element_text(vjust = 175, hjust = 0.5, angle = 0),
+            plot.title = element_text(vjust = 2.5, hjust = 0.5, size = 16))
+    
+      cplot
+    
+      })
+    
+    # Create a table of the information displayed in the graphics
+      output$table <- renderTable({
+    
+        table <- get_loc_table(ddat(), input$player_name4)
+    
+        table %>% rename("Zone" = category, "Count" = count, "Usage %" = usage, "Swing %" = swing_pct, "Take %" = take_pct, 
+                     "Run Value" = run_value, "Swing Runs" = swing_value, "Take Runs" = take_value)
+      })
+    
+    
+    # Create a table of the inputted batter's swing decisions (Chase %, Contact %, Z-Swing %, etc.)
+    
+      output$table6 <- renderTable({
+      
+      get_all_batter_data2(ddat(), input$player_name4)
+      
+      })
+      
+  # Trending Charts (Fifth Tab)
+    # Create a reactive data frame that changes the info in the rs23$game_date from character type to Date type
+      
+      trdat <- reactive ({
+        trend_dat %>% mutate(game_date = as.Date(game_date))
+      })
+      
+      
+    # Use get_slash_trend() to create the first Plotly visualization (BA, OBP, SLG)
+      
+      output$slash_trend <- renderPlotly({
+        get_slash_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+      
+    # Use get_KBB_trend() to create the second Plotly visualization (K%, BB%, CsW%, Take%)
+      
+      output$KBB_trend <- renderPlotly({
+        get_KBB_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+      
+    # Use get_plate_disc_trend() to create the third Plotly visualization (O-Swing%, O-Con%, Z-Swing%, Z-Con%)
+      
+      output$plate_disc_trend <- renderPlotly({
+        get_plate_disc_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+      
+    # Use get_wOBA_trend() to create the fourth Plotly visualization (wOBA, xwOBA)
+      
+      output$wOBA_trend <- renderPlotly({
+        get_wOBA_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+      
+    # Use get_barrel_trend() to create the fifth Plotly visualization (HH%, SwSpot%, Barrel%)
+      
+      output$barrel_trend <- renderPlotly({
+        get_barrel_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+      
+    # Use get_batted_ball_trend() to create the sixth Plotly visualization (GB%, LD%, FB%, PU%)
+      
+      output$batted_ball <- renderPlotly({
+        get_batted_ball_trend(trdat(), input$pitch_type5, input$date_range[1], input$date_range[2], input$player_name5)
+      })
+  }
+  
+  
+# Run the app
+  
+shinyApp(ui, server)
+  
+    
