@@ -10,7 +10,7 @@
   get_zone_data <- function(df, Player, type = "whiff", pitch_type, p_throws) {
     
     
-    # Filter the data by pitcher handedness
+    # Filter the data by pitcher handedness ('pidf')
     
     if(p_throws == "R"){
       pidf <- df %>%  filter(p_throws=="R")
@@ -21,7 +21,7 @@
     }
     
     
-    # Filter the data by pitch type
+    # Filter the data by pitch type ('pitch_df')
     
     if(pitch_type == "Breaking Ball") {
       pitch_df <- pidf %>%  filter(pitch_name %in% c("Slider", "Curveball", "Knuckle Curve", "Slurve", "Sweeper",
@@ -36,26 +36,39 @@
     
     
     # Create the midpoint values needed for the color scale argument in the plot (below average will be blue, above average will be red)
+     # Create the 'lg_dat' object using 'get_lg_table2()' function to get the league averages
     
-    lg_dat <- get_lg_table2(pitch_df)
-    whiff_mid_zone <- lg_dat$whiff_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$whiff_pct != ""]
-    whiff_mid_quad <- lg_dat$whiff_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$whiff_pct != ""]
-    swing_mid_zone<- lg_dat$swing_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$swing_pct != ""]
-    swing_mid_quad<- lg_dat$swing_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$swing_pct != ""]
-    take_mid_zone<- lg_dat$take_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$take_pct != ""]
-    take_mid_quad<- lg_dat$take_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$take_pct != ""]
-    HH_mid_zone<- lg_dat$hard_hit[lg_dat$zone_group == "Zone 1-9" & lg_dat$hard_hit != ""]
-    HH_mid_quad<- lg_dat$hard_hit[lg_dat$zone_group == "Zone 11-14" & lg_dat$hard_hit != ""]
-    CsW_mid_zone<- lg_dat$CsW[lg_dat$zone_group == "Zone 1-9" & lg_dat$CsW != ""]
-    CsW_mid_quad<- lg_dat$CsW[lg_dat$zone_group == "Zone 11-14" & lg_dat$CsW != ""]
-    SS_mid_zone<- lg_dat$sw_spot[lg_dat$zone_group == "Zone 1-9" & lg_dat$sw_spot != ""]
-    SS_mid_quad<- lg_dat$sw_spot[lg_dat$zone_group == "Zone 11-14" & lg_dat$sw_spot != ""]
-    EV_mid_zone<- lg_dat$avg_ev[lg_dat$zone_group == "Zone 1-9" & lg_dat$avg_ev != ""]
-    EV_mid_quad<- lg_dat$avg_ev[lg_dat$zone_group == "Zone 11-14" & lg_dat$avg_ev != ""]
-    LA_mid_zone<- lg_dat$avg_la[lg_dat$zone_group == "Zone 1-9" & lg_dat$avg_la != ""]
-    LA_mid_quad<- lg_dat$avg_la[lg_dat$zone_group == "Zone 11-14" & lg_dat$avg_la != ""]
-    B_mid_zone<- lg_dat$barrel_rate[lg_dat$zone_group == "Zone 1-9" & lg_dat$barrel_rate != ""]
-    B_mid_quad<- lg_dat$barrel_rate[lg_dat$zone_group == "Zone 11-14" & lg_dat$barrel_rate != ""]
+      lg_dat <- get_lg_table2(pitch_df)
+
+    
+     # Use the object 'lg_dat' to isolate the appropriate values for each stat by zone
+    
+      whiff_mid_zone <- lg_dat$whiff_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$whiff_pct != ""]
+      whiff_mid_quad <- lg_dat$whiff_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$whiff_pct != ""]
+    
+      swing_mid_zone<- lg_dat$swing_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$swing_pct != ""]
+      swing_mid_quad<- lg_dat$swing_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$swing_pct != ""]
+    
+      take_mid_zone<- lg_dat$take_pct[lg_dat$zone_group == "Zone 1-9" & lg_dat$take_pct != ""]
+      take_mid_quad<- lg_dat$take_pct[lg_dat$zone_group == "Zone 11-14" & lg_dat$take_pct != ""]
+    
+      HH_mid_zone<- lg_dat$hard_hit[lg_dat$zone_group == "Zone 1-9" & lg_dat$hard_hit != ""]
+      HH_mid_quad<- lg_dat$hard_hit[lg_dat$zone_group == "Zone 11-14" & lg_dat$hard_hit != ""]
+    
+      CsW_mid_zone<- lg_dat$CsW[lg_dat$zone_group == "Zone 1-9" & lg_dat$CsW != ""]
+      CsW_mid_quad<- lg_dat$CsW[lg_dat$zone_group == "Zone 11-14" & lg_dat$CsW != ""]
+    
+      SS_mid_zone<- lg_dat$sw_spot[lg_dat$zone_group == "Zone 1-9" & lg_dat$sw_spot != ""]
+      SS_mid_quad<- lg_dat$sw_spot[lg_dat$zone_group == "Zone 11-14" & lg_dat$sw_spot != ""]
+    
+      EV_mid_zone<- lg_dat$avg_ev[lg_dat$zone_group == "Zone 1-9" & lg_dat$avg_ev != ""]
+      EV_mid_quad<- lg_dat$avg_ev[lg_dat$zone_group == "Zone 11-14" & lg_dat$avg_ev != ""]
+    
+      LA_mid_zone<- lg_dat$avg_la[lg_dat$zone_group == "Zone 1-9" & lg_dat$avg_la != ""]
+      LA_mid_quad<- lg_dat$avg_la[lg_dat$zone_group == "Zone 11-14" & lg_dat$avg_la != ""]
+    
+      B_mid_zone<- lg_dat$barrel_rate[lg_dat$zone_group == "Zone 1-9" & lg_dat$barrel_rate != ""]
+      B_mid_quad<- lg_dat$barrel_rate[lg_dat$zone_group == "Zone 11-14" & lg_dat$barrel_rate != ""]
     
     
     # Create each statistic that is available in the 'type' argument of this function (Whiff %, Swing %, etc.)
@@ -750,5 +763,6 @@
     
   }
 
-# The EV and LA Plotly histograms displayed in this Second Tab are built in the Rshinyapp server using 'zonedat' and renderPlotly
- # See App_UIServer
+# The EV and LA Plotly histograms displayed in this Second Tab are built in the RShiny server
+ # See 'Shiny_UIServer.R' lines 648 - 698
+ # Or see 'FullMLBBattingApp.R' lines 2759 - 2809
