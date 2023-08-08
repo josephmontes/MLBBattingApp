@@ -249,5 +249,5 @@
 
 
 # The other 2 data visualizations displayed in this fourth tab are built in the RShiny server
- # See 'Shiny_UIServer.R' lines 759 - 820 & 823 - 870
+ # See 'UIServer.RShiny' lines 759 - 820 & 823 - 870
  # Or see 'FullMLBBattingApp.R' lines 2870 - 2931 & 2934 - 2981
