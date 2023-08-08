@@ -7,7 +7,7 @@ library(cowplot)
 library(plotly)
 
 # Load the Statcast data from 2019-2023
- # After I used baseballr::scrape_statcast_savant() to get each season's data, I loaded them individually into CSVs
+ # After using baseballr::scrape_statcast_savant() to get each season's data, I loaded them individually into CSVs
 
 s19 <- read.csv("season2019.csv")
 s20 <- read.csv("season2020.csv")
