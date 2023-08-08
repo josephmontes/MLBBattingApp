@@ -396,7 +396,7 @@
       )
 
 
-# Define Server
+# DEFINE SERVER
 
   server <- function(input, output) {
     
