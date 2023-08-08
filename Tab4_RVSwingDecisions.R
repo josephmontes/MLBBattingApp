@@ -1,5 +1,5 @@
-# Use 'alldat' to mutate, clean, and isolate the data needed for the Swing Decision data visualization 
-# This fourth tab is centered around dividing the batter's zone by 'heart' of the zone, 'shadow' or edge of the zone, 'chase' part of the zone, and 'waste' pitches
+# This fourth tab is centered around dividing and analyzing the strike zone by 'heart' of the zone, 'shadow' or edge of the zone, 'chase' part of the zone, and 'waste' pitches
+ # Use 'alldat' to mutate, clean, and isolate the data needed for the Swing Decision data visualization 
 
   swing_dat <- alldat %>% 
     filter(!is.na(plate_x)) %>% 
@@ -11,8 +11,7 @@
   
   
   # I created a second get_years() function to execute this data visualization
-  # 'df' is 'swing_dat'
-  # Each argument in the function is an input in the Rshiny app that will filter the data
+   # Each argument in the function is an input in the Rshiny app that will filter the data
   
   get_years2 <- function(df, years, p_throws, pitch_type, counts) {
     filtered_data <- df %>%
@@ -41,7 +40,7 @@
     return(pitch_df)
   }
   
- # CREATE TABLE 1
+ # CREATE PLAYER TABLE
   # Create the get_loc_table() function that will output the info needed for the Swing Decision data visualizations
   # 'df' comes from the data frame filtered by previously created get_years2()
   
@@ -120,7 +119,7 @@
     table
   }
   
-# CREATE TABLE 2  
+# CREATE LEAGUE TABLE 
   # Create the get_lg_table() function, which does the same as get_loc_table(), but finds the league average rather than being player-specific
   
   get_lg_table <- function(df){
@@ -164,7 +163,7 @@
     
   }
   
-# CREATE FIRST PLOT  
+# CREATE THE 4 ZONE DATA VISUALIZATION ('heart', 'shadow', 'chase', 'waste')
   # Create the 'get_rv_plot()' function that will create the 4-Zone Run Value plot visualization
   
   get_rv_plot <- function(df, player_name) {
@@ -248,5 +247,7 @@
     return(combined_plot)
   }
 
-# The other 2 plots are built in the server section of the Rshiny app
- # See App_UIServer
+
+# The other 2 data visualizations displayed in this fourth tab are built in the RShiny server
+ # See 'Shiny_UIServer.R' lines 759 - 820 & 823 - 870
+ # Or see 'FullMLBBattingApp.R' lines 2870 - 2931 & 2934 - 2981
