@@ -26,5 +26,5 @@
 
 
 # The heat maps are individually built in the server of the Rshiny app
- # See 'Shiny_UIServer.R' lines 403-629
+ # See 'UIServer.RShiny' lines 403-629
  # Or see 'Full_MLBBattingApp.R' lines 2535 - 2740
