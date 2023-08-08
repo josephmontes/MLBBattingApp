@@ -1,4 +1,4 @@
-# Use the full Statcast data ('alldat') to mutate, clean, and isolate the data needed for heat maps
+# Use the full Statcast data ('alldat') to mutate, clean, and isolate the data needed for heat maps ('heatmap_data')
 
   heatmap_data <- alldat %>% mutate(pfx_x_in_pv = -12*pfx_x, 
                                     pfx_z_in = 12*pfx_z,
@@ -18,12 +18,13 @@
            !is.na(player_name))
   
   
-# Create the find_plots() function that is used to filter the data for each heat map type
+# Create 'find_plots()' function used to filter the data for each heat map stat-type
   
   find_plots <- function(data, column, value) {
     subset(data, data[[column]] == value)
   }
 
 
-# The heatmaps are built in the actual Rshiny 'server' using ‘find_plots()’, ‘heatmap_data’ and shiny::renderPlot()
- # See 'App_UIServer'
+# The heat maps are individually built in the server of the Rshiny app
+ # See 'Shiny_UIServer.R' lines 403-629
+ # Or see 'Full_MLBBattingApp.R' lines 2535 - 2740
